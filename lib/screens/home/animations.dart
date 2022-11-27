@@ -1,81 +1,68 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_advanced_drawer/flutter_advanced_drawer.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
-import 'package:todo/constants/colors.dart';
-import 'package:todo/constants/types.dart';
-import 'package:todo/models/set-system-overlay-style.dart';
-import 'package:todo/screens/home/animations.dart';
-import 'package:todo/controllers/home/home-controller.dart';
-import 'package:todo/screens/home/components/drawer/drawer.dart';
-import 'package:todo/screens/home/components/floating-button.dart';
-import 'package:todo/screens/home/components/navbar.dart';
-import 'package:todo/screens/home/components/tasks/tasks.dart';
-import 'package:todo/screens/home/components/title-text.dart';
 
-class HomeScreen extends StatelessWidget {
-  HomeController homeController = Get.put(HomeController());
-  HomeAnimationsController homeAnimationsController =
-      Get.put(HomeAnimationsController());
-  int num = 0;
-  bool _isDark;
-  @override
-  Widget build(BuildContext context) {
-    final Brightness brightnessValue =
-        MediaQuery.of(context).platformBrightness;
-    _isDark = brightnessValue == Brightness.dark;
-    _isDark
-        ? setSystemUIOverlayStyle(
-            systemUIOverlayStyle: SystemUIOverlayStyle.BLUE_DARK)
-        : setSystemUIOverlayStyle(
-            systemUIOverlayStyle: SystemUIOverlayStyle.LIGHT);
-    homeController.advancedDrawerController.addListener(() {
-      Get.find<HomeController>().changeDrawerStatus();
-      if (Get.find<HomeController>().drawerStatus == DrawerStatus.OPEN) {
-        _isDark
-            ? setSystemUIOverlayStyle(
-                systemUIOverlayStyle: SystemUIOverlayStyle.DARK)
-            : setSystemUIOverlayStyle(
-                systemUIOverlayStyle: SystemUIOverlayStyle.BLUE);
-      } else if (Get.find<HomeController>().drawerStatus ==
-          DrawerStatus.CLOSE) {
-        _isDark
-            ? setSystemUIOverlayStyle(
-                systemUIOverlayStyle: SystemUIOverlayStyle.BLUE_DARK)
-            : setSystemUIOverlayStyle(
-                systemUIOverlayStyle: SystemUIOverlayStyle.LIGHT);
-      }
-    });
-    startHomeAnimations();
-    return GetBuilder<HomeController>(
-      builder: (_) {
-        return AdvancedDrawer(
-          backdropColor: _isDark ? kDarkBackgroundColor : kSecondaryColor,
-          controller: homeController.advancedDrawerController,
-          animationCurve: Curves.easeInOut,
-          animationDuration: const Duration(milliseconds: 300),
-          animateChildDecoration: true,
-          rtlOpening: false,
-          openRatio: 0.66,
-          disabledGestures: false,
-          childDecoration: const BoxDecoration(
-            borderRadius: const BorderRadius.all(Radius.circular(50)),
-          ),
-          drawer: HomeDrawer(),
-          child: Scaffold(
-            backgroundColor: _isDark ? kDarkBackgroundColor2 : kBackgroundColor,
-            body: SafeArea(
-                child: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Column(
-                children: [HomeNavbar(), HomeTitleText(), HomeTasks()],
-              ),
-            )),
-            floatingActionButton: Padding(
-                padding: const EdgeInsets.only(right: 15, bottom: 25),
-                child: HomeFloatingButton()),
-          ),
-        );
-      },
-    );
+class HomeAnimationsController extends GetxController {
+  // navbar:
+  double navbarOpacity1 = 0, navbarOpacity2 = 0;
+  // title:
+  double titleOpacity = 0;
+  EdgeInsets titlePadding = EdgeInsets.only(top: 20, left: 25);
+  // tasks:
+  double tasksTitleOpacity = 0;
+  double notFoundOpacity = 0;
+  // floating button:
+  double floatingButtonOpacity = 0;
+
+  // update void
+  updateHomeAnimations(
+      {double newNavbarOpacity1,
+      double newNavbarOpacity2,
+      double newTitleOpacity,
+      double newTasksTitleOpacity,
+      double newNotFoundOpacity,
+      double newFloatingButtonOpacity,
+      EdgeInsets newTitlePadding}) {
+    navbarOpacity1 =
+        newNavbarOpacity1 != null ? newNavbarOpacity1 : navbarOpacity1;
+    navbarOpacity2 =
+        newNavbarOpacity2 != null ? newNavbarOpacity2 : navbarOpacity2;
+    titleOpacity = newTitleOpacity != null ? newTitleOpacity : titleOpacity;
+    tasksTitleOpacity =
+        newTasksTitleOpacity != null ? newTasksTitleOpacity : tasksTitleOpacity;
+    notFoundOpacity =
+        newNotFoundOpacity != null ? newNotFoundOpacity : notFoundOpacity;
+    floatingButtonOpacity = newFloatingButtonOpacity != null
+        ? newFloatingButtonOpacity
+        : floatingButtonOpacity;
+    titlePadding = newTitlePadding != null ? newTitlePadding : titlePadding;
+    update();
   }
+}
+
+startHomeAnimations() async {
+  await Future.delayed(Duration(milliseconds: 500));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newNavbarOpacity1: 1,
+  );
+  await Future.delayed(Duration(milliseconds: 200));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newNavbarOpacity2: 1,
+  );
+  await Future.delayed(Duration(milliseconds: 500));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newTitleOpacity: 1,
+    newTitlePadding: EdgeInsets.only(top: 10, left: 25),
+  );
+  await Future.delayed(Duration(milliseconds: 500));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newTasksTitleOpacity: 1,
+  );
+  await Future.delayed(Duration(milliseconds: 500));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newNotFoundOpacity: 1,
+  );
+  await Future.delayed(Duration(milliseconds: 500));
+  Get.find<HomeAnimationsController>().updateHomeAnimations(
+    newFloatingButtonOpacity: 1,
+  );
 }
