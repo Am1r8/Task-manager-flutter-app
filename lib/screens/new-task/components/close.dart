@@ -35,7 +35,7 @@ class NewTaskCloseButton extends StatelessWidget {
                   },
                 ),
               ),
-            ]
+            ],
           ),
         ),
       );
