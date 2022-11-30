@@ -10,7 +10,7 @@ import 'package:todo/screens/home/components/drawer/drawer.dart';
 import 'package:todo/screens/home/components/floating-button.dart';
 import 'package:todo/screens/home/components/navbar.dart';
 import 'package:todo/screens/home/components/tasks/tasks.dart';
-import 'package:todo/screens/home/components/title-text.dart';
+import 'package:todo/screens/home/components/tittle-text.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeController homeController = Get.put(HomeController());
