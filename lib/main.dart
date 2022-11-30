@@ -22,7 +22,7 @@ class App extends StatelessWidget {
       title: 'Tasker',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: kPrimaryColor
+        primaryColor: kPrimaryColor,
       ),
       initialRoute: initRoute,
       routes: {
